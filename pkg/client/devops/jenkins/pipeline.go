@@ -824,6 +824,12 @@ func interanlErrorMessage() *devops.CheckCronRes {
 }
 
 func parseCronJobTime(msg string) (string, string, error) {
+	// jenkins2.440.1版本处理msg
+	newMsg := strings.ReplaceAll(msg, "Coordinated Universal Time", "UTC")
+	newMsgSP := strings.Split(newMsg, ";")
+	newMsgSP_F := strings.Split(newMsgSP[0], ",")
+	newMsgSP_B := strings.Split(newMsgSP[1], ",")
+	msg = newMsgSP_F[0] + "," + newMsgSP_F[1] + "," + strings.ReplaceAll(newMsgSP_F[2], " at", "") + ";" + newMsgSP_B[0] + "," + newMsgSP_B[1] + "," + strings.ReplaceAll(newMsgSP_B[2], " at", "")
 
 	times := strings.Split(msg, ";")
 
